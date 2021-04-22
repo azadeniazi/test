@@ -6,16 +6,7 @@ Window {
     width: 640
     height: 480
     title: qsTr("Hello World")
-    Button {
-        id: botton1
-        text: "Icon state button"
 
-        //iconSource: "assets/icon_" + (pressed ? "pressed" : "normal") + ".png"
-        checkable: true
-
-        // enabled: false
-        onClicked: text = text + " clicked"
-    }
     CheckBox {
                id: chkPlatformAutoRepeat
                text: "platformAutoRepeat"
@@ -37,8 +28,8 @@ Window {
     Button {
          anchors.top:row1.bottom
           id: control
-          text: qsTr("Button")
-//enabled: false
+          text: qsTr("Button1")
+          enabled: false
           contentItem: Text {
               text: control.text
               font: control.font
@@ -53,7 +44,7 @@ Window {
               implicitWidth:100
               implicitHeight: 40
               opacity: enabled ? 1 : 0.3
-              border.color: control.down ? "red" : "#21be2b"
+              border.color: control.down ? "red" : "21be2b"
               border.width: 1
               radius: 2
           }
