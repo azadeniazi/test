@@ -1,88 +1,81 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
+
 Window {
     visible: true
     width: 640
     height: 480
     title: qsTr("Hello World")
 
-    CheckBox {
-               id: chkPlatformAutoRepeat
-               text: "platformAutoRepeat"
-               anchors.top: botton1.bottom
-           }
-    Row {
-        id : row1
-        anchors.top: chkPlatformAutoRepeat.bottom
-          Button {
-              text: "Ok"
-              onClicked: model.submit()
-          }
-          Button {
-              text: "Cancel"
-              onClicked: model.revert()
-          }
-      }
-
-    Button {
-         anchors.top:row1.bottom
-          id: control
-          text: qsTr("Button1")
-          enabled: false
-          contentItem: Text {
-              text: control.text
-              font: control.font
-              opacity: enabled ? 1.0 : 0.3
-              color: control.down ? "#17a81a" : "#21be2b"
-              horizontalAlignment: Text.AlignHCenter
-              verticalAlignment: Text.AlignVCenter
-              elide: Text.ElideRight
-          }
-
-          background: Rectangle {
-              implicitWidth:100
-              implicitHeight: 40
-              opacity: enabled ? 1 : 0.3
-              border.color: control.down ? "red" : "21be2b"
-              border.width: 1
-              radius: 2
-          }
-      }
 
 
-    CheckBox {
-        anchors.centerIn: parent
-         id: control1
-         text: "CheckBox"
-         checked: true
 
-         indicator: Rectangle {
-             implicitWidth: 26
-             implicitHeight: 26
-             x: control1.leftPadding
-             y: parent.height / 2 - height / 2
-             radius: 3
-             border.color: control1.down ? "red" : "green"
 
-             Rectangle {
-                 width: 14
-                 height: 14
-                 x: 6
-                 y: 6
-                 radius: 2
-                 color: control1.down ? "blue" : "red"
-                 visible: control1.checked
-             }
-         }
 
-         contentItem: Text {
-             text: control1.text
-             font: control1.font
-             opacity: enabled ? 1.0 : 0.3
-             color: control1.down ? "grey" : "red"
-             verticalAlignment: Text.AlignVCenter
-             leftPadding: control1.indicator.width + control.spacing
-         }
-     }
-  }
+
+
+    Rectangle {
+        color: "lightgray"
+        width: parent.width
+        height: parent.height
+
+        VisualItemModel {
+            id: itemModel
+
+            Rectangle {
+                width: view.width; height: view.height
+                color: "red"
+                Text { text: "Page 1"; font.bold: true; anchors.centerIn: parent }
+            }
+            Rectangle {
+                width: view.width; height: view.height
+                color: "blue"
+                Text { text: "Page 2"; font.bold: true; anchors.centerIn: parent }
+            }
+            Rectangle {
+                width: view.width; height: view.height
+                color: "green"
+                Text { text: "Page 3"; font.bold: true; anchors.centerIn: parent }
+            }
+        }
+
+        ListView {
+            id: view
+            anchors { fill: parent; bottomMargin: 30 }
+            model: itemModel
+            preferredHighlightBegin: 0; preferredHighlightEnd: 0
+            highlightRangeMode: ListView.StrictlyEnforceRange
+            orientation: ListView.Horizontal
+            snapMode: ListView.SnapOneItem; flickDeceleration: 2000
+        }
+
+        Rectangle {
+            width: parent.width; height: 30
+            anchors { top: view.bottom; bottom: parent.bottom }
+            color: "gray"
+
+            Row {
+                anchors.centerIn: parent
+                spacing: 20
+
+                Repeater {
+                    model: itemModel.count
+
+                    Rectangle {
+                        width: 5; height: 5
+                        radius: 3
+                        color: view.currentIndex == index ? "black" : "white"
+
+                        MouseArea {
+                            width: 20; height: 20
+                            anchors.centerIn: parent
+                            onClicked: view.currentIndex = index
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
